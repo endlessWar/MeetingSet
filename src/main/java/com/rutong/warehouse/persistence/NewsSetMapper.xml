@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.INewsSetMapper">
+    <insert id="addNews">
+        INSERT INTO news(guid, title, "inner", createtime, updatetime, createuser, updateuser, imageurl, isimage, totop, type, haslink, isanli, discrib) VALUES (
+            #{guid},
+            #{title},
+            #{inner},
+            #{createtime},
+            #{updatetime},
+            #{createuser},
+            #{updateuser},
+            #{imageurl},
+            #{isimage},
+            #{totop},
+            #{type},
+            #{haslink},
+            #{isanli},
+            #{discrib}
+        )
+    </insert>
+    <insert id="addLink">
+        INSERT INTO newsmeetinglink(guid, meetingguid, newsguid) VALUES (
+            #{guid},
+            #{meetingguid},
+            #{newsguid}
+        )
+    </insert>
+    <update id="updateNews">
+        UPDATE news
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="inner != null and inner != ''">
+                "inner" = #{inner},
+            </if>
+            <if test="imageurl != null and imageurl != ''">
+                imageurl = #{imageurl},
+            </if>
+            <if test="isimage != null">
+                isimage = #{isimage},
+            </if>
+            <if test="totop != null">
+                totop = #{totop},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="haslink != null">
+                haslink = #{haslink},
+            </if>
+            <if test="isanli != null">
+                isanli = #{isanli},
+            </if>
+            <if test="discrib != null and discrib != ''">
+                discrib = #{discrib},
+            </if>
+        </set>
+        where guid = #{guid}
+    </update>
+    <update id="setNewsNotImage">
+        UPDATE news SET isimage=0
+    </update>
+    <delete id="delNews">
+        DELETE FROM news WHERE guid = #{guid}
+    </delete>
+    <delete id="delLink">
+        DELETE FROM newsmeetinglink WHERE newsguid = #{guid}
+    </delete>
+
+    <select id="searchNewsList" resultType="com.rutong.warehouse.domain.News">
+        SELECT
+        guid,
+        title,
+        createtime,
+        updatetime,
+        discrib,
+        createuser,
+        updateuser,
+        imageurl,
+        isimage,
+        totop,
+        type,
+        (select count(1) from newsmeetinglink where newsguid=a.guid) > 0 as haslink
+        FROM news AS a
+        <where>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            <if test="isanli != null">
+                isanli = #{isanli}
+            </if>
+        </where>
+        ORDER BY totop DESC,createtime DESC
+    </select>
+    <select id="searchNewsById" resultType="com.rutong.warehouse.domain.News">
+        SELECT
+        guid,
+        title,
+        "inner",
+        createtime,
+        updatetime,
+        createuser,
+        updateuser,
+        imageurl,
+        isimage,
+        totop,
+        type,
+        haslink,
+        isanli,
+        discrib
+        FROM news
+        WHERE guid = #{guid}
+    </select>
+    <select id="getLink" resultType="com.rutong.warehouse.domain.Meetingset">
+        SELECT
+            a.guid
+            FROM meetingset as a
+        LEFT JOIN newsmeetinglink as b ON a.guid = b.meetingguid
+        WHERE b.newsguid = #{guid}
+    </select>
+    <select id="searchNewsListLink" resultType="com.rutong.warehouse.domain.News">
+        SELECT a.* FROM (SELECT
+        guid,
+        title,
+        createtime,
+        updatetime,
+        createuser,
+        updateuser,
+        imageurl,
+        isimage,
+        totop,
+        type,
+        haslink
+        FROM news AS a
+        <where>
+            <if test="type != null">
+                type = #{type}
+            </if>
+        </where>
+        ORDER BY totop DESC,createtime DESC) a WHERE a.haslink = true
+    </select>
+    <select id="searchNewsListAll" resultType="com.rutong.warehouse.domain.News">
+        SELECT
+        guid,
+        title
+        FROM news
+        ORDER BY totop DESC,createtime DESC
+    </select>
+</mapper>

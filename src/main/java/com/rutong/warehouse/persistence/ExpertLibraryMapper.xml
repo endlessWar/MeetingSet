@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.IExpertLibraryMapper">
+    <insert id="addExpertLibrary">
+        INSERT INTO expert_library (guid, name, image, unit, position, worktitle, introduce, createtime, sort) VALUES (
+            #{guid},
+            #{name},
+            #{image},
+            #{unit},
+            #{position},
+            #{worktitle},
+            #{introduce},
+            #{createtime},
+            #{sort}
+        )
+    </insert>
+    <update id="changeExpertLibrary">
+        UPDATE expert_library
+        <set>
+            <if test="name!=null and name != ''">
+                name = #{name},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="unit!=null and unit != ''">
+                unit = #{unit},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="worktitle!=null and worktitle != ''">
+                worktitle = #{worktitle},
+            </if>
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+            <if test="sort!=null and sort != ''">
+                sort = #{sort},
+            </if>
+        </set>
+        WHERE guid = #{guid}
+    </update>
+    <delete id="delExpertLibrary">
+        DELETE FROM expert_library WHERE guid = #{guid}
+    </delete>
+
+    <select id="searchExpertLibraryList" resultType="com.rutong.warehouse.domain.ExpertLibrary">
+        SELECT
+        guid,
+        name,
+        image,
+        unit,
+        position,
+        worktitle,
+        introduce,
+        createtime,
+        sort
+        FROM expert_library
+        <where>
+            <if test="name != null and name != ''">
+                name like '%'||#{name}||'%'
+            </if>
+        </where>
+        ORDER BY sort
+    </select>
+    <select id="searchExpertLibrary" resultType="com.rutong.warehouse.domain.ExpertLibrary">
+        SELECT
+            guid,
+            name,
+            image,
+            unit,
+            position,
+            worktitle,
+            introduce,
+            createtime,
+            sort
+        FROM expert_library
+        WHERE guid = #{guid}
+    </select>
+</mapper>

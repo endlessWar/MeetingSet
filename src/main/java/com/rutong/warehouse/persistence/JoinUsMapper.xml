@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.IJoinUsMapper">
+    <insert id="addJoinUs">
+        INSERT INTO joinus (guid, work, peoplenum, workplace, content, createtime) VALUES (
+            #{guid},
+            #{work},
+            #{peoplenum},
+            #{workplace},
+            #{content},
+            #{createtime}
+        )
+    </insert>
+    <update id="changeJoinUs">
+        UPDATE joinus
+        <set>
+            <if test="work!=null and work != ''">
+                work = #{work},
+            </if>
+            <if test="peoplenum != null">
+                peoplenum = #{peoplenum},
+            </if>
+            <if test="workplace!=null and workplace != ''">
+                workplace = #{workplace},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+        </set>
+        WHERE guid = #{guid}
+    </update>
+    <delete id="delJoinUs">
+        DELETE FROM joinus WHERE guid = #{guid}
+    </delete>
+
+    <select id="searchJoinUsList" resultType="com.rutong.warehouse.domain.JoinUs">
+        SELECT
+        guid,
+        work,
+        peoplenum,
+        workplace,
+        content,
+        createtime
+        FROM joinus
+        <where>
+            <if test="work != null and work != ''">
+                work like '%'||#{work}||'%'
+            </if>
+        </where>
+    </select>
+    <select id="searchJoinUs" resultType="com.rutong.warehouse.domain.JoinUs">
+        SELECT
+            guid,
+            work,
+            peoplenum,
+            workplace,
+            content,
+            createtime
+        FROM joinus
+        WHERE guid = #{guid}
+    </select>
+</mapper>

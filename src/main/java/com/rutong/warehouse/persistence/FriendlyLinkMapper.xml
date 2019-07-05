@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.IFriendlyLinkMapper">
+    <insert id="addFriendlyLink">
+        INSERT INTO friendly_link (guid, name, url) VALUES (
+            #{guid},
+            #{name},
+            #{url}
+        )
+    </insert>
+    <update id="changeFriendlyLink">
+        UPDATE friendly_link
+        <set>
+            <if test="name!=null and name != ''">
+                name = #{name},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+        </set>
+        WHERE guid = #{guid}
+    </update>
+    <delete id="delFriendlyLink">
+        DELETE FROM friendly_link WHERE guid = #{guid}
+    </delete>
+
+    <select id="searchFriendlyLinkList" resultType="com.rutong.warehouse.domain.FriendlyLink">
+        SELECT
+            guid,
+            name,
+            url
+        FROM friendly_link
+        <where>
+            <if test="name != null and name != ''">
+                name like '%'||#{name}||'%'
+            </if>
+        </where>
+    </select>
+    <select id="searchFriendlyLink" resultType="com.rutong.warehouse.domain.FriendlyLink">
+        SELECT
+            guid,
+            name,
+            url
+        FROM friendly_link
+        WHERE guid = #{guid}
+    </select>
+</mapper>

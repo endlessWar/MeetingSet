@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.IMeetingSetMapper">
+    <insert id="addMeeting" parameterType="com.rutong.warehouse.domain.Meetingset">
+        INSERT INTO meetingset (guid, title, meeting, isback, createtime, createuser, img, discrib, linkurl) VALUES (
+                #{guid},
+                #{title},
+                #{meeting},
+                #{isback},
+                #{createtime},
+                #{createuser},
+                #{img},
+                #{discrib},
+                #{linkurl}
+        )
+    </insert>
+    <insert id="saveLink">
+        INSERT INTO newsmeetinglink(guid, meetingguid, newsguid) VALUES (
+                #{guid},
+                #{meetingguid},
+                #{newsguid}
+        )
+    </insert>
+
+    <update id="changeMeeting" parameterType="com.rutong.warehouse.domain.Meetingset">
+        UPDATE meetingset
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="meeting != null and meeting != ''">
+                meeting = #{meeting},
+            </if>
+            <if test="isback != null">
+                isback = #{isback},
+            </if>
+            <if test="createuser != null and createuser != ''">
+                createuser = #{createuser},
+            </if>
+            <if test="img != null and img != ''">
+                img = #{img},
+            </if>
+            <if test="discrib != null and discrib != ''">
+                discrib = #{discrib},
+            </if>
+            <if test="linkurl != null and linkurl != ''">
+                linkurl = #{linkurl},
+            </if>
+        </set>
+        WHERE guid = #{guid}
+    </update>
+
+    <delete id="delMeeting" parameterType="com.rutong.warehouse.domain.Meetingset">
+        DELETE FROM meetingset WHERE guid = #{guid}
+    </delete>
+    <delete id="delLinkNews">
+        DELETE FROM newsmeetinglink where meetingguid = #{guid}
+    </delete>
+
+    <select id="searchMeetingList" resultType="com.rutong.warehouse.domain.Meetingset" parameterType="com.rutong.warehouse.domain.Meetingset">
+        SELECT guid, title, isback, createtime, createuser, img, discrib FROM meetingset
+        <where>
+            <if test="title !=null and title !=''">
+                AND title like '%'||#{title}||'%'
+            </if>
+            <if test="isback !=null">
+                AND isback = #{isback}
+            </if>
+        </where>
+        ORDER BY createtime DESC
+    </select>
+    <select id="searchMeeting" resultType="com.rutong.warehouse.domain.Meetingset" parameterType="com.rutong.warehouse.domain.Meetingset">
+        SELECT guid, title, meeting, isback, createtime, createuser, img, discrib, linkurl FROM meetingset
+        WHERE guid = #{guid}
+    </select>
+    <select id="getLinkByMeeting" resultType="com.rutong.warehouse.domain.News">
+        SELECT b.guid,b.title,b.imageurl,b.type
+        FROM newsmeetinglink a LEFT JOIN news b ON a.newsguid=b.guid where a.meetingguid=#{guid} ORDER BY b.createtime DESC limit 3
+    </select>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rutong.warehouse.persistence.IUserBaseMapper">
+    <insert id="addUser">
+      insert into user_manager (
+          guid,
+          useraccount,
+          username,
+          phone,
+          mail,
+          password,
+          birthday,
+          sex,
+          createtime
+      ) values (
+          #{guid},
+          #{useraccount},
+          #{username},
+          #{phone},
+          #{mail},
+          #{password},
+          #{birthday},
+          #{sex},
+          #{createtime}
+      )
+    </insert>
+    <update id="updateUser">
+        update user_manager
+        set useraccount = #{useraccount} ,
+            username = #{username},
+            phone = #{phone},
+            mail = #{mail},
+            password = #{password},
+            birthday = #{birthday},
+            sex = #{sex},
+            updatetime = #{updatetime}
+        where guid = #{guid}
+    </update>
+    <delete id="delUser">
+        DELETE from user_manager where guid = #{guid}
+    </delete>
+    <delete id="delLinkByUser">
+        DELETE from report_user_link where userid = #{guid}
+    </delete>
+
+    <select id="getUserInfo" resultType="com.rutong.warehouse.domain.UserManager">
+        select
+            guid,
+            useraccount,
+            username,
+            phone,
+            mail,
+            password,
+            birthday,
+            sex,
+            createtime,
+            updatetime
+        from user_manager where guid = #{guid}
+    </select>
+    <select id="searchusers" resultType="com.rutong.warehouse.domain.UserManager">
+        select
+            guid,
+            useraccount,
+            username,
+            phone,
+            mail,
+            password,
+            birthday,
+            sex,
+            createtime,
+            updatetime
+        from user_manager where useraccount like '%'||#{word}||'%'
+                                or username like '%'||#{word}||'%'
+                                or phone like '%'||#{word}||'%'
+                                or mail like '%'||#{word}||'%'
+    </select>
+    <select id="getPassword" resultType="java.lang.String">
+        select password from user_manager where useraccount = #{useraccount}
+    </select>
+    <select id="getUserByAccount" resultType="com.rutong.warehouse.domain.UserManager">
+        select
+            guid,
+            useraccount,
+            username,
+            phone,
+            mail,
+            password,
+            birthday,
+            sex,
+            createtime,
+            updatetime
+        from user_manager where useraccount = #{useraccount}
+    </select>
+</mapper>
