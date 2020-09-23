@@ -32,4 +32,8 @@ public interface INewsSetMapper {
     List<News> searchNewsListLink(News news);
 
     List<News> searchNewsListAll();
+
+    List<News> searchNewsbackListLink(News news);
+
+    List<News> searchNewsbackList(News news);
 }

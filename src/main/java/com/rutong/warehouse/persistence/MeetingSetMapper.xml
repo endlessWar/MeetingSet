@@ -75,6 +75,7 @@
     </select>
     <select id="getLinkByMeeting" resultType="com.rutong.warehouse.domain.News">
         SELECT b.guid,b.title,b.imageurl,b.type
-        FROM newsmeetinglink a LEFT JOIN news b ON a.newsguid=b.guid where a.meetingguid=#{guid} ORDER BY b.createtime DESC limit 3
+        FROM newsmeetinglink a LEFT JOIN news b ON a.newsguid=b.guid
+        where a.meetingguid=#{guid} ORDER BY b.backsort limit 4
     </select>
 </mapper>

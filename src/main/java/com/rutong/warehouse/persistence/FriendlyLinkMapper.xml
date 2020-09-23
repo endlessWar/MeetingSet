@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rutong.warehouse.persistence.IFriendlyLinkMapper">
     <insert id="addFriendlyLink">
-        INSERT INTO friendly_link (guid, name, url) VALUES (
+        INSERT INTO friendly_link (guid, name, url, sort) VALUES (
             #{guid},
             #{name},
-            #{url}
+            #{url},
+            #{sort}
         )
     </insert>
     <update id="changeFriendlyLink">
@@ -16,6 +17,9 @@
             </if>
             <if test="url != null and url != ''">
                 url = #{url},
+            </if>
+            <if test="sort != null and sort != ''">
+                sort = #{sort},
             </if>
         </set>
         WHERE guid = #{guid}
@@ -28,19 +32,22 @@
         SELECT
             guid,
             name,
-            url
+            url,
+            sort
         FROM friendly_link
         <where>
             <if test="name != null and name != ''">
                 name like '%'||#{name}||'%'
             </if>
         </where>
+        ORDER BY sort
     </select>
     <select id="searchFriendlyLink" resultType="com.rutong.warehouse.domain.FriendlyLink">
         SELECT
             guid,
             name,
-            url
+            url,
+            sort
         FROM friendly_link
         WHERE guid = #{guid}
     </select>

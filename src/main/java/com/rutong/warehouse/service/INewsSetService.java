@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface INewsSetService {
     ApiResult searchNewsList(News news);
 
+    ApiResult searchNewsListBack(News news);
+
     ApiResult searchNews(News news);
 
     ApiResult addNews(News news);

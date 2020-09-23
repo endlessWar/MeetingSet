@@ -21,6 +21,33 @@ public class News extends Query{
   private Integer isanli;
   private boolean haslink = false;
   private String discrib;
+  private int isopen;
+  private int backsort;
+  private int twicesort;
+
+  public int getIsopen() {
+    return isopen;
+  }
+
+  public void setIsopen(int isopen) {
+    this.isopen = isopen;
+  }
+
+  public int getBacksort() {
+    return backsort;
+  }
+
+  public void setBacksort(int backsort) {
+    this.backsort = backsort;
+  }
+
+  public int getTwicesort() {
+    return twicesort;
+  }
+
+  public void setTwicesort(int twicesort) {
+    this.twicesort = twicesort;
+  }
 
   public String getDiscrib() {
     return discrib;

@@ -45,6 +45,18 @@ public class NewsSerServiceImpl implements INewsSetService {
         ApiPager<News> apiPage = new ApiPager<>(page.getPageSize(), page.getPageNum(), page.getTotal(), page.getResult());
         return new ApiResult<>().success(apiPage);
     }
+    @Override
+    public ApiResult searchNewsListBack(News news) {
+        PageHelper.startPage(news.getPage(), news.getSize(), true);
+        Page<News> page;
+        if(news.isHaslink()){
+            page =(Page<News>) newsSetMapper.searchNewsbackListLink(news);
+        }else{
+            page =(Page<News>) newsSetMapper.searchNewsbackList(news);
+        }
+        ApiPager<News> apiPage = new ApiPager<>(page.getPageSize(), page.getPageNum(), page.getTotal(), page.getResult());
+        return new ApiResult<>().success(apiPage);
+    }
     private void changeImage(News news){
         if(news.getIsimage()==1){
             newsSetMapper.setNewsNotImage();

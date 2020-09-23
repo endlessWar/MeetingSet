@@ -12,12 +12,13 @@ eureka:
       sz: default-zone
     registry-fetch-interval-seconds: 10
     serviceUrl:
-      defaultZone: http://172.19.201.177:1122/eureka/
+      defaultZone: http://106.15.45.245:1122/eureka/
 spring:
   application:
     name: warehouse
   profiles:
       active: dev
+
 
 mybatis:
   typeAliasesPackage: com.rutong.warehouse
@@ -26,6 +27,23 @@ mybatis:
 feign:
   httpclient:
     enable: true
+logging:
+  level:
+    root: WARN
+
+---
+spring:
+  profiles: pro
+  http:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 5120MB
+  datasource:
+    url: jdbc:postgresql://172.19.201.177:5432/test?charSet=utf-8
+    username: postgres
+    password: Passw0rd
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
 
 ---
 spring:
@@ -35,8 +53,8 @@ spring:
       max-file-size: 100MB
       max-request-size: 1000MB
   datasource:
-    url: jdbc:postgresql://172.19.201.177:5432/test?charSet=utf-8
+    url: jdbc:postgresql://106.15.45.245:5432/test?charSet=utf-8
     username: postgres
-    password: 123456
+    password: Passw0rd
     driver-class-name: org.postgresql.Driver
     type: com.alibaba.druid.pool.DruidDataSource

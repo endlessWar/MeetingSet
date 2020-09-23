@@ -37,6 +37,16 @@ public class NewsSetController {
         }
     }
 
+    @PostMapping("/search_news_list_back")
+    public ApiResult search_news_list_back(@RequestBody News news) {
+        try {
+            return newsSetService.searchNewsListBack(news);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult("查询失败").failure(e.getMessage());
+        }
+    }
+
     @PostMapping("/search_news")
     public ApiResult searchNews(@RequestBody News news) {
         try {
@@ -94,7 +104,7 @@ public class NewsSetController {
             return new ApiResult<String>().failure(500,"文件不能为空",null);
         }
 
-        if (multipartFile.getSize() > 5242880) {
+        if (multipartFile.getSize() > 524288000) {
             return new ApiResult<String>().failure(500,"文件过大",null);
         }
 

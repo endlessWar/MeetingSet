@@ -1,6 +1,11 @@
 package com.rutong.warehouse.domain;
 
 
+import java.util.AbstractSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.WeakHashMap;
+
 public class CooperatePeople extends Query{
 
   private String guid;
@@ -9,8 +14,22 @@ public class CooperatePeople extends Query{
   private Integer sortnum;
   private String url;
 
+  public final void testextends(){
+      System.out.println("extends");
+  }
 
-  public String getGuid() {
+    public CooperatePeople() {
+    }
+
+    public CooperatePeople(String guid, String name, String imageurl, Integer sortnum, String url) {
+        this.guid = guid;
+        this.name = name;
+        this.imageurl = imageurl;
+        this.sortnum = sortnum;
+        this.url = url;
+    }
+
+    public String getGuid() {
     return guid;
   }
 
